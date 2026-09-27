@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FitBuddy - All Users</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            margin-bottom: 8px;
+            font-size: 32px;
+        }
+
+        .header p {
+            color: #6b7280;
+        }
+
+        .user-card {
+            background: white;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
+        }
+
+        .user-card h2 {
+            margin-top: 0;
+            color: #2563eb;
+        }
+
+        .user-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .user-item {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .user-item strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .section-title {
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+
+        .plan {
+            background: #f8fafc;
+            padding: 18px;
+            border-radius: 10px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+
+        .updated {
+            background: #eff6ff;
+            border-left: 5px solid #2563eb;
+            padding: 18px;
+            border-radius: 10px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+        }
+
+        .nutrition {
+            background: #f0fdf4;
+            border-left: 5px solid #16a34a;
+            padding: 18px;
+            border-radius: 10px;
+            line-height: 1.6;
+        }
+
+        .empty {
+            background: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 16px;
+            color: #6b7280;
+        }
+
+        .back-button {
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            padding: 13px;
+            border-radius: 10px;
+            background: #2563eb;
+            color: white;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .back-button:hover {
+            background: #1d4ed8;
+        }
+
+        .footer {
+            text-align: center;
+            color: #6b7280;
+            font-size: 13px;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 700px) {
+            .container {
+                margin: 20px auto;
+                padding: 12px;
+            }
+
+            .user-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="header">
+            <h1>👥 FitBuddy Users</h1>
+            <p>View registered users and their generated fitness plans</p>
+        </div>
+
+        {% if users %}
+
+            {% for user in users %}
+
+                <div class="user-card">
+
+                    <h2>👤 {{ user.username }}</h2>
+
+                    <div class="user-grid">
+
+                        <div class="user-item">
+                            <strong>User ID</strong>
+                            {{ user.user_id }}
+                        </div>
+
+                        <div class="user-item">
+                            <strong>Age</strong>
+                            {{ user.age }}
+                        </div>
+
+                        <div class="user-item">
+                            <strong>Weight</strong>
+                            {{ user.weight }} kg
+                        </div>
+
+                        <div class="user-item">
+                            <strong>Fitness Goal</strong>
+                            {{ user.goal }}
+                        </div>
+
+                        <div class="user-item">
+                            <strong>Workout Intensity</strong>
+                            {{ user.intensity }}
+                        </div>
+
+                    </div>
+
+                    {% for plan in plans %}
+
+                        {% if plan.user_id == user.user_id %}
+
+                            <h3 class="section-title">
+                                💪 Original Workout Plan
+                            </h3>
+
+                            <div class="plan">
+                                {{ plan.original_plan }}
+                            </div>
+
+                            {% if plan.updated_plan %}
+
+                                <h3 class="section-title">
+                                    🔄 Updated Workout Plan
+                                </h3>
+
+                                <div class="updated">
+                                    {{ plan.updated_plan }}
+                                </div>
+
+                            {% endif %}
+
+                            {% if plan.nutrition_tip %}
+
+                                <h3 class="section-title">
+                                    🥗 Nutrition Tip
+                                </h3>
+
+                                <div class="nutrition">
+                                    {{ plan.nutrition_tip }}
+                                </div>
+
+                            {% endif %}
+
+                        {% endif %}
+
+                    {% endfor %}
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="empty">
+                <h2>No users found</h2>
+                <p>Generate a fitness plan to create your first user.</p>
+            </div>
+
+        {% endif %}
+
+        <a href="/" class="back-button">
+            ← Back to FitBuddy
+        </a>
+
+        <div class="footer">
+            Powered by FastAPI + Google Gemini
+        </div>
+
+    </div>
+
+</body>
+
+</html>
